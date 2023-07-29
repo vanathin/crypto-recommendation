@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="4" author="vanathi">
+        <sqlFile path="classpath:/org/springframework/batch/core/schema-mysql.sql"
+                 relativeToChangelogFile="false"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+
+    <changeSet id="1" author="Vanathi">
+        <createTable tableName="crypto">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="symbol" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="supported" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Vanathi">
+        <createTable tableName="crypto_file_import">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="crypto_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_frame" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" />
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_crypto_file_import_crypto_id"
+                                 baseTableName="crypto_file_import" baseColumnNames="crypto_id"
+                                 referencedTableName="crypto" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="3" author="Vanathi">
+        <createTable tableName="crypto_price">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="crypto_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_timestamp" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(19,4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
+
+            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_crypto_price_crypto_id"
+                                 baseTableName="crypto_price" baseColumnNames="crypto_id"
+                                 referencedTableName="crypto" referencedColumnNames="id"/>
+    </changeSet>
+
+
+</databaseChangeLog>

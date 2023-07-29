@@ -1,0 +1,80 @@
+package com.xm.crypto.recommendation.csv.writer;
+
+import com.xm.crypto.recommendation.csv.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csv.reader.MultiCryptoPriceReader;
+import com.xm.crypto.recommendation.persistence.entities.Crypto;
+import com.xm.crypto.recommendation.persistence.entities.CryptoFileImport;
+import com.xm.crypto.recommendation.persistence.repositories.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.persistence.repositories.CryptoPriceRepository;
+import com.xm.crypto.recommendation.persistence.repositories.CryptoRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Collections;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest(properties = {"spring.batch.job.enabled=false"})
+public class CryptoPriceWriterTest {
+    @InjectMocks
+    private CryptoPriceWriter cryptoPriceWriter;
+
+    @Mock
+    private CryptoRepository cryptoRepository;
+
+    @Mock
+    private CryptoFileImportRepository cryptoFileImportRepository;
+
+    @Mock
+    private CryptoPriceRepository cryptoPriceRepository;
+
+    private CryptoFileImportDto cryptoFileImportDto;
+    private Crypto crypto;
+    private CryptoFileImport cryptoFileImport;
+
+    @BeforeEach
+    public void setUp() {
+        // Create your test data
+        cryptoFileImportDto = CryptoFileImportDto.builder()
+                .symbol("BTC")
+                .price(BigDecimal.valueOf(45000.00))
+                .timestamp(Instant.now().toEpochMilli())
+                .filename("BTC_price.csv")
+                .lastModified(ZonedDateTime.now())
+                .build();
+
+        crypto = new Crypto();
+        crypto.setId(1L);
+        crypto.setSymbol("BTC");
+
+        cryptoFileImport = new CryptoFileImport();
+        cryptoFileImport.setFileName("btc.csv");
+    }
+
+    @Test
+    public void testWrite() throws Exception {
+        when(cryptoRepository.findBySymbol(anyString())).thenReturn(null);
+        when(cryptoRepository.save(any(Crypto.class))).thenReturn(crypto);
+        when(cryptoFileImportRepository.findByCryptoIdAndFileNameAndLastModifiedDate(anyLong(), anyString(), any(ZonedDateTime.class))).thenReturn(null);
+        when(cryptoFileImportRepository.save(any(CryptoFileImport.class))).thenReturn(cryptoFileImport);
+
+        cryptoPriceWriter.write(Collections.singletonList(cryptoFileImportDto));
+
+        verify(cryptoRepository, times(1)).findBySymbol(anyString());
+        verify(cryptoRepository, times(1)).save(any(Crypto.class));
+        verify(cryptoFileImportRepository, times(1)).findByCryptoIdAndFileNameAndLastModifiedDate(anyLong(), anyString(), any(ZonedDateTime.class));
+        verify(cryptoFileImportRepository, times(1)).save(any(CryptoFileImport.class));
+        verify(cryptoPriceRepository, times(1)).saveAll(anyList());
+    }
+
+}
