@@ -41,7 +41,7 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
     @Override
     @Transactional
     public void write(List<? extends CryptoFileImportDto> cryptoFileImportDtos) throws Exception {
-        String symbol = null;
+
         List<CryptoPrice> cryptoPrices = new ArrayList<>();
 
         for (CryptoFileImportDto cryptoFileImportDto : cryptoFileImportDtos) {
@@ -55,8 +55,8 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
                             .supported(true)
                             .build();
                     crypto = cryptoRepository.save(cryptoBuilder);
+                    cryptoMap.put(cryptoFileImportDto.symbol(), crypto.getId());
                 }
-                cryptoMap.put(cryptoFileImportDto.symbol(), crypto.getId());
             }
 
             //Save CryptoFile
@@ -72,12 +72,11 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
                             .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoMap.get(cryptoFileImportDto.symbol())).build())
                             .build();
                     cryptoFileImportRepository.save(cryptoFileImportBuilder);
-                    symbol = cryptoFileImportDto.symbol();
                 }
             }
 
             //Save Crypto price
-            if (!StringUtils.isEmpty(symbol) && symbol.equalsIgnoreCase(cryptoFileImportDto.symbol())) {
+            if (cryptoMap.containsKey(cryptoFileImportDto.symbol())) {
                 //Save CryptoPrice
                 CryptoPrice cryptoPrice = CryptoPrice.builder()
                         .price(cryptoFileImportDto.price())
