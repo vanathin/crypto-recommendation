@@ -1,12 +1,12 @@
 package com.xm.crypto.recommendation.csv.writer;
 
-import com.xm.crypto.recommendation.csv.dto.CryptoFileImportDto;
-import com.xm.crypto.recommendation.csv.reader.MultiCryptoPriceReader;
-import com.xm.crypto.recommendation.persistence.entities.Crypto;
-import com.xm.crypto.recommendation.persistence.entities.CryptoFileImport;
-import com.xm.crypto.recommendation.persistence.repositories.CryptoFileImportRepository;
-import com.xm.crypto.recommendation.persistence.repositories.CryptoPriceRepository;
-import com.xm.crypto.recommendation.persistence.repositories.CryptoRepository;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
+import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImport;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.csvimporter.service.writer.CryptoPriceWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

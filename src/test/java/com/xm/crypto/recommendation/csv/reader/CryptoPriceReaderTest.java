@@ -1,6 +1,7 @@
 package com.xm.crypto.recommendation.csv.reader;
 
-import com.xm.crypto.recommendation.csv.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.service.reader.CryptoPriceReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,9 +12,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
