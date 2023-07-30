@@ -26,10 +26,8 @@ public class RecommenderService {
         PageRequest pageRequest = PageRequest.of(0, 1); // Limit to 1
         List<CryptoNormalizedRangeResult> result = cryptoRepository.findCryptoWithHighestNormalizedRangeForDay(date, pageRequest);
 
-        for (CryptoNormalizedRangeResult cryptoProjection : result) {
-            Long cryptoId = cryptoProjection.getCryptoId();
-            String symbol = cryptoProjection.getSymbol();
-            BigDecimal normalizedRange = cryptoProjection.getNormalizedRange();
+        if (!result.isEmpty()) {
+            CryptoNormalizedRangeResult cryptoProjection = result.get(0);
            return  CryptoRecommenderResponseDTO.builder()
                     .highestNormalizedRange(cryptoProjection.getNormalizedRange())
                     .symbol(cryptoProjection.getSymbol())

@@ -1,10 +1,13 @@
 package com.xm.crypto.recommendation.csv.reader;
 
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
-import com.xm.crypto.recommendation.csvimporter.service.reader.CryptoPriceReader;
+import com.xm.crypto.recommendation.csvimporter.batch.reader.CryptoPriceReader;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,10 +27,12 @@ class CryptoPriceReaderTest {
 
     private CryptoPriceReader reader;
     private Resource resource;
+    @Mock
+    private CryptoPriceRepository cryptoPriceRepository;
 
     @BeforeEach
     public void setup() throws Exception {
-        reader = new CryptoPriceReader();
+        reader = new CryptoPriceReader(cryptoPriceRepository);
         resource = new ClassPathResource("test.csv");
         reader.setResource(resource);
         reader.afterPropertiesSet(); // You must call this method because it is normally called by Spring to initialize the reader

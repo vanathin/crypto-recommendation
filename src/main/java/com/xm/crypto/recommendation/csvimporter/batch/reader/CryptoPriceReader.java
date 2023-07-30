@@ -1,6 +1,9 @@
-package com.xm.crypto.recommendation.csvimporter.service.reader;
+package com.xm.crypto.recommendation.csvimporter.batch.reader;
 
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImport;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -20,34 +23,40 @@ import java.time.ZonedDateTime;
 @Component
 public class CryptoPriceReader extends FlatFileItemReader<CryptoFileImportDto> {
 
+    private final CryptoPriceRepository cryptoPriceRepository;
+    private Resource resource;
 
-    public CryptoPriceReader() {
+    public CryptoPriceReader(CryptoPriceRepository cryptoFileImportRepository) {
+        this.cryptoPriceRepository = cryptoFileImportRepository;
         setLineMapper(createCryptoPriceLineMapper());
         setLinesToSkip(1); // skip header line
     }
-
-    private Resource resource;
-
-
     @Override
     public void setResource(Resource resource) {
         this.resource = resource;
         super.setResource(resource);
     }
-
     @Override
     protected CryptoFileImportDto doRead() throws Exception {
         CryptoFileImportDto item = super.doRead();
+        String filename = resource.getFilename();
+        ZonedDateTime lastModified = getLastModifiedDate();
 
-        if (item != null) {
-            String filename = resource.getFilename();
-            ZonedDateTime lastModified = getLastModifiedDate();
 
-            // Inject additional details into the item.
-            return new CryptoFileImportDto(item.timestamp(), item.symbol(), item.price(), filename, lastModified);
+        if(item != null ) {
+            boolean allowed = cryptoPriceRepository.existsByPriceTimestampAndCryptoSymbol
+                    (ZonedDateTime.ofInstant(Instant.ofEpochMilli(item.timestamp()), ZoneId.systemDefault()), item.symbol());
+
+            if (!allowed) {
+                return new CryptoFileImportDto(item.timestamp(), item.symbol(), item.price(), filename, lastModified);
+            }
         }
 
         return null;
+    }
+
+    private ZonedDateTime getTimeStamp(Long timeStamp) throws IOException {
+        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(timeStamp), ZoneId.systemDefault());
     }
 
     private ZonedDateTime getLastModifiedDate() throws IOException {

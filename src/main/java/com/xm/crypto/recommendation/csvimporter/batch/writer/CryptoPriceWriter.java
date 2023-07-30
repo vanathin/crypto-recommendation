@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.csvimporter.service.writer;
+package com.xm.crypto.recommendation.csvimporter.batch.writer;
 
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
@@ -7,7 +7,6 @@ import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoPrice;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
     private final CryptoFileImportRepository cryptoFileImportRepository;
     private final CryptoPriceRepository cryptoPriceRepository;
 
-    Map<String, Long> cryptoMap = new ConcurrentHashMap<>();
+    Map<String, Long> cryptoCache = new ConcurrentHashMap<>();
 
     @Autowired
     public CryptoPriceWriter(CryptoRepository cryptoRepository, CryptoFileImportRepository cryptoFileImportRepository,
@@ -46,8 +45,8 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
 
         for (CryptoFileImportDto cryptoFileImportDto : cryptoFileImportDtos) {
 
-            //Save Crypto
-            if (!cryptoMap.containsKey(cryptoFileImportDto.symbol())) {
+            //Save Crypto name
+            if (!cryptoCache.containsKey(cryptoFileImportDto.symbol())) {
                 Crypto crypto = cryptoRepository.findBySymbol(cryptoFileImportDto.symbol());
                 if (crypto == null) {
                     Crypto cryptoBuilder = Crypto.builder()
@@ -55,36 +54,43 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
                             .supported(true)
                             .build();
                     crypto = cryptoRepository.save(cryptoBuilder);
-                    cryptoMap.put(cryptoFileImportDto.symbol(), crypto.getId());
                 }
+                cryptoCache.put(cryptoFileImportDto.symbol(), crypto.getId());
             }
 
-            //Save CryptoFile
-            if (cryptoMap.containsKey(cryptoFileImportDto.symbol())) {
-                CryptoFileImport cryptoFileImport = cryptoFileImportRepository.findByCryptoIdAndFileNameAndLastModifiedDate
-                        (cryptoMap.get(cryptoFileImportDto.symbol()), cryptoFileImportDto.filename(), cryptoFileImportDto.lastModified());
-                if (cryptoFileImport == null) {
-                    CryptoFileImport cryptoFileImportBuilder = CryptoFileImport
+            //Save Crypto file details
+            CryptoFileImport cryptoFileImport = cryptoFileImportRepository.findByCryptoSymbolAndFileNameAndLastModifiedDate
+                    (cryptoFileImportDto.symbol(), cryptoFileImportDto.filename(), cryptoFileImportDto.lastModified());
+
+            if (cryptoFileImport == null) {
+                cryptoPriceRepository.deleteBySymbol(cryptoFileImportDto.symbol()); // Remove old price details
+
+                ///Update existing crypto file details
+                CryptoFileImport cryptoFileImportBuilder = cryptoFileImportRepository.
+                        findByCryptoSymbol(cryptoFileImportDto.symbol());
+
+                if (cryptoFileImportBuilder != null) {
+                    cryptoFileImportBuilder = CryptoFileImport
                             .builder()
                             .timeFrame(30) // TODO Move to config
                             .fileName(cryptoFileImportDto.filename())
                             .lastModifiedDate(cryptoFileImportDto.lastModified())
-                            .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoMap.get(cryptoFileImportDto.symbol())).build())
+                            .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoCache.get(cryptoFileImportDto.symbol())).build())
                             .build();
-                    cryptoFileImportRepository.save(cryptoFileImportBuilder);
+                } else {
+                    cryptoFileImportBuilder.setLastModifiedDate(cryptoFileImportDto.lastModified());
+                    cryptoFileImportBuilder.setTimeFrame(30);
                 }
+                cryptoFileImportRepository.save(cryptoFileImportBuilder);
             }
 
-            //Save Crypto price
-            if (cryptoMap.containsKey(cryptoFileImportDto.symbol())) {
-                //Save CryptoPrice
-                CryptoPrice cryptoPrice = CryptoPrice.builder()
-                        .price(cryptoFileImportDto.price())
-                        .priceTimestamp(ZonedDateTime.ofInstant(Instant.ofEpochMilli(cryptoFileImportDto.timestamp()), ZoneId.systemDefault()))
-                        .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoMap.get(cryptoFileImportDto.symbol())).build())
-                        .build();
-                cryptoPrices.add(cryptoPrice);
-            }
+            //Save Crypto price details
+            CryptoPrice cryptoPrice = CryptoPrice.builder()
+                    .price(cryptoFileImportDto.price())
+                    .priceTimestamp(ZonedDateTime.ofInstant(Instant.ofEpochMilli(cryptoFileImportDto.timestamp()), ZoneId.systemDefault()))
+                    .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoCache.get(cryptoFileImportDto.symbol())).build())
+                    .build();
+            cryptoPrices.add(cryptoPrice);
         }
         cryptoPriceRepository.saveAll(cryptoPrices);
     }

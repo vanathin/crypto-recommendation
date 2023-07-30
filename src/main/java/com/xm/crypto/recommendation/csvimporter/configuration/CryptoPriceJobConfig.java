@@ -1,8 +1,8 @@
 package com.xm.crypto.recommendation.csvimporter.configuration;
 
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
-import com.xm.crypto.recommendation.csvimporter.service.reader.MultiCryptoPriceReader;
-import com.xm.crypto.recommendation.csvimporter.service.writer.CryptoPriceWriter;
+import com.xm.crypto.recommendation.csvimporter.batch.reader.MultiCryptoPriceReader;
+import com.xm.crypto.recommendation.csvimporter.batch.writer.CryptoPriceWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -21,8 +21,6 @@ public class CryptoPriceJobConfig {
     private final MultiCryptoPriceReader multiCryptoPriceReader;
     private final CryptoPriceWriter cryptoPriceWriter;
 
-
-
     @Autowired
     public CryptoPriceJobConfig(JobBuilderFactory jobBuilderFactory,
                                 StepBuilderFactory stepBuilderFactory,
@@ -34,7 +32,6 @@ public class CryptoPriceJobConfig {
         this.cryptoPriceWriter = cryptoPriceWriter;
     }
 
-
     @Bean
     public Step importCryptoPriceStep() {
         return stepBuilderFactory.get("importCryptoPriceStep")
@@ -44,8 +41,6 @@ public class CryptoPriceJobConfig {
                 .writer(cryptoPriceWriter)
                 .build();
     }
-
-
     @Bean
     public Job importCryptoPriceJob(Step importCryptoPriceStep) {
         return jobBuilderFactory.get("importCryptoPriceJob")
@@ -54,5 +49,4 @@ public class CryptoPriceJobConfig {
                 .end()
                 .build();
     }
-
 }

@@ -31,8 +31,6 @@ public class CryptoPrice {
 
     @Column(name = "price_timestamp", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    @CreationTimestamp
     private ZonedDateTime priceTimestamp;
 
     @Column(name = "price", nullable = false, precision = 19, scale = 4)

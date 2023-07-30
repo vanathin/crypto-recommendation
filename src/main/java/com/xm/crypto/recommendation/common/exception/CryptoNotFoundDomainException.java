@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.recommender.error.exception;
+package com.xm.crypto.recommendation.common.exception;
 
 import com.xm.crypto.recommendation.common.exception.DomainEntityNotFoundException;
 

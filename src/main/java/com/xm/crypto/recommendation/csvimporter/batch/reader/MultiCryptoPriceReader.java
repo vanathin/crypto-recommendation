@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.csvimporter.service.reader;
+package com.xm.crypto.recommendation.csvimporter.batch.reader;
 
 
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;

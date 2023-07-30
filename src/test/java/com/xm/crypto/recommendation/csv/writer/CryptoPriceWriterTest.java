@@ -6,7 +6,7 @@ import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImp
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
-import com.xm.crypto.recommendation.csvimporter.service.writer.CryptoPriceWriter;
+import com.xm.crypto.recommendation.csvimporter.batch.writer.CryptoPriceWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,14 +65,14 @@ public class CryptoPriceWriterTest {
     public void testWrite() throws Exception {
         when(cryptoRepository.findBySymbol(anyString())).thenReturn(null);
         when(cryptoRepository.save(any(Crypto.class))).thenReturn(crypto);
-        when(cryptoFileImportRepository.findByCryptoIdAndFileNameAndLastModifiedDate(anyLong(), anyString(), any(ZonedDateTime.class))).thenReturn(null);
+        when(cryptoFileImportRepository.findByCryptoSymbolAndFileNameAndLastModifiedDate(anyString(), anyString(), any(ZonedDateTime.class))).thenReturn(null);
         when(cryptoFileImportRepository.save(any(CryptoFileImport.class))).thenReturn(cryptoFileImport);
 
         cryptoPriceWriter.write(Collections.singletonList(cryptoFileImportDto));
 
         verify(cryptoRepository, times(1)).findBySymbol(anyString());
         verify(cryptoRepository, times(1)).save(any(Crypto.class));
-        verify(cryptoFileImportRepository, times(1)).findByCryptoIdAndFileNameAndLastModifiedDate(anyLong(), anyString(), any(ZonedDateTime.class));
+        verify(cryptoFileImportRepository, times(1)).findByCryptoSymbolAndFileNameAndLastModifiedDate(anyString(), anyString(), any(ZonedDateTime.class));
         verify(cryptoFileImportRepository, times(1)).save(any(CryptoFileImport.class));
         verify(cryptoPriceRepository, times(1)).saveAll(anyList());
     }
