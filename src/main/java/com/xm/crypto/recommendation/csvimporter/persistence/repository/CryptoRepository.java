@@ -2,8 +2,7 @@ package com.xm.crypto.recommendation.csvimporter.persistence.repository;
 
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
 
-import com.xm.crypto.recommendation.info.persistence.entity.CryptoStatsProjection;
-import com.xm.crypto.recommendation.recommender.dto.projection.CryptoNormalizedRangeResult;
+import com.xm.crypto.recommendation.recommender.dto.projection.CryptoNormalizedRangeProjection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,7 +21,8 @@ public interface CryptoRepository extends JpaRepository<Crypto, Long> {
             "WHERE DATE(cp.priceTimestamp) = DATE(:date) " +
             "GROUP BY cp.crypto " +
             "ORDER BY normalizedRange DESC")
-    List<CryptoNormalizedRangeResult> findCryptoWithHighestNormalizedRangeForDay(@Param("date") Date date, Pageable pageable);
+    List<CryptoNormalizedRangeProjection> findCryptoWithHighestNormalizedRangeForDay(@Param("date") Date date, Pageable pageable);
+
 
 
 }

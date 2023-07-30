@@ -19,4 +19,7 @@ public interface CryptoPriceRepository extends JpaRepository<CryptoPrice, Long> 
     @Modifying
     @Query("DELETE FROM CryptoPrice cp WHERE cp.crypto.symbol = :symbol")
     void deleteBySymbol(@Param("symbol") String symbol);
+
+
+    //CryptoStatsProjection getCryptoStats(@Param("symbol") String symbol, @Param("timeFrame") Integer timeFrame);
 }

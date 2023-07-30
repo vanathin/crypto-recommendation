@@ -1,14 +1,12 @@
 package com.xm.crypto.recommendation.recommender.service;
 
-import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
 import com.xm.crypto.recommendation.recommender.dto.CryptoRecommenderResponseDTO;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
-import com.xm.crypto.recommendation.recommender.dto.projection.CryptoNormalizedRangeResult;
+import com.xm.crypto.recommendation.recommender.dto.projection.CryptoNormalizedRangeProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +22,10 @@ public class RecommenderService {
 
     public CryptoRecommenderResponseDTO findByDay(Date date) {
         PageRequest pageRequest = PageRequest.of(0, 1); // Limit to 1
-        List<CryptoNormalizedRangeResult> result = cryptoRepository.findCryptoWithHighestNormalizedRangeForDay(date, pageRequest);
+        List<CryptoNormalizedRangeProjection> result = cryptoRepository.findCryptoWithHighestNormalizedRangeForDay(date, pageRequest);
 
         if (!result.isEmpty()) {
-            CryptoNormalizedRangeResult cryptoProjection = result.get(0);
+            CryptoNormalizedRangeProjection cryptoProjection = result.get(0);
            return  CryptoRecommenderResponseDTO.builder()
                     .highestNormalizedRange(cryptoProjection.getNormalizedRange())
                     .symbol(cryptoProjection.getSymbol())

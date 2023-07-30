@@ -35,11 +35,4 @@ public class CryptoPrice {
 
     @Column(name = "price", nullable = false, precision = 19, scale = 4)
     private BigDecimal price;
-
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
-
 }

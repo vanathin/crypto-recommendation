@@ -63,13 +63,11 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
                     (cryptoFileImportDto.symbol(), cryptoFileImportDto.filename(), cryptoFileImportDto.lastModified());
 
             if (cryptoFileImport == null) {
-                cryptoPriceRepository.deleteBySymbol(cryptoFileImportDto.symbol()); // Remove old price details
-
                 ///Update existing crypto file details
                 CryptoFileImport cryptoFileImportBuilder = cryptoFileImportRepository.
                         findByCryptoSymbol(cryptoFileImportDto.symbol());
 
-                if (cryptoFileImportBuilder != null) {
+                if (cryptoFileImportBuilder == null) {
                     cryptoFileImportBuilder = CryptoFileImport
                             .builder()
                             .timeFrame(30) // TODO Move to config
@@ -78,6 +76,7 @@ public class CryptoPriceWriter implements ItemWriter<CryptoFileImportDto> {
                             .crypto(Crypto.builder().symbol(cryptoFileImportDto.symbol()).id(cryptoCache.get(cryptoFileImportDto.symbol())).build())
                             .build();
                 } else {
+                    cryptoPriceRepository.deleteBySymbol(cryptoFileImportDto.symbol()); // Remove old price details
                     cryptoFileImportBuilder.setLastModifiedDate(cryptoFileImportDto.lastModified());
                     cryptoFileImportBuilder.setTimeFrame(30);
                 }

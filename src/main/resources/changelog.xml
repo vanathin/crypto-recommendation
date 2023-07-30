@@ -21,8 +21,6 @@
             <column name="supported" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 
@@ -43,8 +41,6 @@
             <column name="last_modified_date" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP" />
         </createTable>
         <addForeignKeyConstraint constraintName="fk_crypto_file_import_crypto_id"
                                  baseTableName="crypto_file_import" baseColumnNames="crypto_id"
@@ -65,9 +61,6 @@
             <column name="price" type="decimal(19,4)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
-
-            <column name="updated_at" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
         <addForeignKeyConstraint constraintName="fk_crypto_price_crypto_id"
                                  baseTableName="crypto_price" baseColumnNames="crypto_id"

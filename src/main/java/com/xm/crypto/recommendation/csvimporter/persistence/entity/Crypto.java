@@ -2,6 +2,9 @@ package com.xm.crypto.recommendation.csvimporter.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Id;
 
 import javax.persistence.*;
@@ -26,13 +29,4 @@ public class Crypto {
 
     @Column(name = "supported", nullable = false, columnDefinition = "boolean default false")
     private boolean supported;
-
-    @Column(name = "created_at", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private ZonedDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private ZonedDateTime updatedAt;
-
 }
