@@ -27,7 +27,6 @@ public class CryptoRecommendationController {
     @GetMapping(value = "/highest-normalized-range", produces = "application/json")
     public ResponseEntity<ResponseDTO> getCryptoWithHighestNormalizedRange(
             @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) {
-
         return Optional.ofNullable(cryptoService.findByDay(date))
                 .map(this::prepareRespectiveResponse)
                 .orElseThrow(() -> new CryptoNotFoundDomainException("Crypto with highest normalized range not found for given date " + date));

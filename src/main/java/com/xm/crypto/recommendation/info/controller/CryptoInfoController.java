@@ -37,7 +37,7 @@ public class CryptoInfoController {
     public ResponseEntity<ResponseDTO> getCryptoNormalizedRange() {
         return Optional.ofNullable(cryptoInfoService.findCryptoWithNormalizedRange())
                 .map(this::prepareRespectiveResponseForNormalizedRange)
-                .orElseThrow(() -> new CryptoNotFoundDomainException("Crypto not found" ));
+                .orElseThrow(() -> new CryptoNotFoundDomainException("Crypto details not found" ));
     }
 
     private ResponseEntity<ResponseDTO> prepareRespectiveResponseForNormalizedRange(List<CryptoNormalizedRangeDTO> cryptoNormalizedRangeDTO) {

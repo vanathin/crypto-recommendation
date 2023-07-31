@@ -33,6 +33,7 @@ public class CryptoPriceJobConfig {
     private final CryptoStatsWriter cryptoStatsWriter;
 
     private final CryptoPriceStepListener cryptoPriceStepListener;
+
     @Autowired
     public CryptoPriceJobConfig(JobBuilderFactory jobBuilderFactory,
                                 StepBuilderFactory stepBuilderFactory,
@@ -57,14 +58,6 @@ public class CryptoPriceJobConfig {
                 .listener(cryptoPriceStepListener)
                 .build();
     }
-   /* @Bean
-    public Step cryptoStatsStep() {
-        return stepBuilderFactory.get("cryptoStatsStep")
-                .<List<CryptoStatsDTO>, List<CryptoStatsDTO>>chunk(1)
-                .reader(cryptoStatsReader)
-                .writer(cryptoStatsWriter)
-                .build();
-    }*/
 
     @Bean
     public Step cryptoStatsStep() {
@@ -78,12 +71,13 @@ public class CryptoPriceJobConfig {
     public Tasklet cryptoStatsTasklet() {
         return (contribution, chunkContext) -> {
             List<CryptoStatsDTO> stats = cryptoStatsReader.read();
-            if(stats != null) {
+            if (stats != null) {
                 cryptoStatsWriter.write(stats);
             }
             return RepeatStatus.FINISHED;
         };
     }
+
     @Bean
     public Job importCryptoPriceJob() {
         return jobBuilderFactory.get("importCryptoPriceJob")
