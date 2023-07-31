@@ -1,14 +1,11 @@
 package com.xm.crypto.recommendation.csvimporter.batch.writer;
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDTO;
 import com.xm.crypto.recommendation.csvimporter.dto.CryptoPriceDTO;
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
-import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImport;
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoPrice;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,8 +25,8 @@ public class CryptoPriceWriter implements ItemWriter<CryptoPriceDTO> {
     private final CryptoPriceRepository cryptoPriceRepository;
 
     Map<String, Long> cryptoCache = new ConcurrentHashMap<>();
-    private LocalDateTime earliestDate = LocalDateTime.MAX;
-    private LocalDateTime latestDate = LocalDateTime.MIN;
+    private LocalDateTime dateTimeForProcessingMonth = null;
+
     @Autowired
     public CryptoPriceWriter(CryptoRepository cryptoRepository, CryptoFileImportRepository cryptoFileImportRepository,
                              CryptoPriceRepository cryptoPriceRepository) {
@@ -47,11 +44,9 @@ public class CryptoPriceWriter implements ItemWriter<CryptoPriceDTO> {
         for (CryptoPriceDTO priceDTO : cryptoPriceDtos) {
 
             LocalDateTime priceDate = priceDTO.getPriceTimestamp();
-            if (priceDate.isBefore(earliestDate)) {
-                earliestDate = priceDate;
-            }
-            if (priceDate.isAfter(latestDate)) {
-                latestDate = priceDate;
+
+            if (priceDate.isBefore(dateTimeForProcessingMonth)) {
+                dateTimeForProcessingMonth = priceDate;
             }
 
             //Save Crypto name
@@ -79,11 +74,7 @@ public class CryptoPriceWriter implements ItemWriter<CryptoPriceDTO> {
         cryptoPriceRepository.saveAll(cryptoPrices);
     }
 
-    public LocalDateTime getEarliestDate() {
-        return earliestDate;
-    }
-
-    public LocalDateTime getLatestDate() {
-        return latestDate;
+    public LocalDateTime getDateTimeForProcessingMonth() {
+        return dateTimeForProcessingMonth;
     }
 }

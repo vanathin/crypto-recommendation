@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 public class CryptoStatsDTO {
+    private String symbol;
     private BigDecimal minValue;
     private BigDecimal maxValue;
     private BigDecimal oldestValue;

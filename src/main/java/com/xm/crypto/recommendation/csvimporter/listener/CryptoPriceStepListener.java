@@ -6,7 +6,6 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -24,8 +23,10 @@ public class CryptoPriceStepListener implements StepExecutionListener {
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        LocalDateTime earliestDate = cryptoPriceWriter.getEarliestDate();
-        stepExecution.getJobExecution().getExecutionContext().putString("monthStartDate", earliestDate.withDayOfMonth(1).toString());
+        LocalDateTime earliestDate = cryptoPriceWriter.getDateTimeForProcessingMonth();
+        if(earliestDate != null) {
+            stepExecution.getJobExecution().getExecutionContext().putString("monthStartDate", earliestDate.withDayOfMonth(1).toString());
+        }
         return stepExecution.getExitStatus();
     }
 }
