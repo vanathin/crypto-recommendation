@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.info.dto;
+package com.xm.crypto.recommendation.recommender.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -50,7 +51,7 @@ public class CryptoPriceWriterTest {
         priceDTO = CryptoPriceDTO.builder()
                 .symbol("BTC")
                 .price(BigDecimal.valueOf(45000.00))
-                .priceTimestamp(ZonedDateTime.ofInstant(Instant.ofEpochMilli(Instant.now().toEpochMilli()), ZoneId.systemDefault()))
+                .priceTimestamp(LocalDateTime.from(ZonedDateTime.ofInstant(Instant.ofEpochMilli(Instant.now().toEpochMilli()), ZoneId.systemDefault())))
                 .build();
 
         crypto = new Crypto();

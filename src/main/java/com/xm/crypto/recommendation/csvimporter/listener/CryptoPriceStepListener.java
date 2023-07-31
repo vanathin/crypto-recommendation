@@ -24,7 +24,7 @@ public class CryptoPriceStepListener implements StepExecutionListener {
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
         LocalDateTime earliestDate = cryptoPriceWriter.getDateTimeForProcessingMonth();
-        if(earliestDate != null) {
+        if (earliestDate != null) {
             stepExecution.getJobExecution().getExecutionContext().putString("monthStartDate", earliestDate.withDayOfMonth(1).toString());
         }
         return stepExecution.getExitStatus();

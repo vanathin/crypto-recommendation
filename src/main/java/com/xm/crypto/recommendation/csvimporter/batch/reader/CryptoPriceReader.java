@@ -27,14 +27,10 @@ public class CryptoPriceReader extends FlatFileItemReader<CryptoPriceDTO> {
     private final CryptoRepository cryptoRepository;
     private Resource resource;
 
-    private final CryptoStatsReader cryptoStatsReader;
 
-
-    public CryptoPriceReader(CryptoFileImportRepository cryptoFileImportRepository, CryptoRepository cryptoRepository,
-                             CryptoStatsReader cryptoStatsReader) {
+    public CryptoPriceReader(CryptoFileImportRepository cryptoFileImportRepository, CryptoRepository cryptoRepository) {
         this.cryptoFileImportRepository = cryptoFileImportRepository;
         this.cryptoRepository = cryptoRepository;
-        this.cryptoStatsReader = cryptoStatsReader;
         setLineMapper(createCryptoPriceLineMapper());
         setLinesToSkip(1); // skip header line
     }
