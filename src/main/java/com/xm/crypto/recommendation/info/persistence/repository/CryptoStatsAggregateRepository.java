@@ -56,4 +56,14 @@ public interface CryptoStatsAggregateRepository extends JpaRepository<CryptoStat
                     "    c.symbol ",
             nativeQuery = true)
     List<Object[]> findAggregatedCryptoStats(@Param("symbol") String symbol);
+
+    @Query(value = "SELECT c.symbol, ((MAX(cs.max_price) - MIN(cs.min_price)) / MIN(cs.min_price)) AS normalized_range " +
+            "FROM crypto_stats cs " +
+            "JOIN crypto c ON c.id = cs.crypto_id " +
+            "WHERE cs.start_date_of_month >= (" +
+            "    SELECT MAX(start_date_of_month) FROM crypto_stats WHERE crypto_id = cs.crypto_id" +
+            ") - INTERVAL (c.time_frame_in_month - 1) MONTH " +
+            "GROUP BY c.symbol " +
+            "ORDER BY normalized_range DESC", nativeQuery = true)
+    List<Object[]> findCryptoWithNormalizedRange();
 }

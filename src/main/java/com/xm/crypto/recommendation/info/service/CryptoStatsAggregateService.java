@@ -1,13 +1,13 @@
 package com.xm.crypto.recommendation.info.service;
 
+import com.xm.crypto.recommendation.info.dto.CryptoNormalizedRangeDTO;
 import com.xm.crypto.recommendation.info.dto.CryptoStatsDTO;
 import com.xm.crypto.recommendation.info.persistence.repository.CryptoStatsAggregateRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CryptoStatsAggregateService {
@@ -18,7 +18,7 @@ public class CryptoStatsAggregateService {
         this.cryptoStatsRepository = cryptoStatsRepository;
     }
 
-    public CryptoStatsDTO getCryptoStatsForGivenSymbol(String symbol) {
+    public CryptoStatsDTO getCryptoStatsAggregationForGivenSymbol(String symbol) {
         List<Object[]> results = cryptoStatsRepository.findAggregatedCryptoStats(symbol);
         for (Object[] result : results) {
             return CryptoStatsDTO.builder()
@@ -30,5 +30,14 @@ public class CryptoStatsAggregateService {
                     .build();
         }
         return null;
+    }
+
+    public List<CryptoNormalizedRangeDTO> findCryptoWithNormalizedRange() {
+        List<Object[]> results = cryptoStatsRepository.findCryptoWithNormalizedRange();
+        return results.stream()
+                .map(result -> new CryptoNormalizedRangeDTO(
+                        (String) result[0],
+                        (BigDecimal) result[1]))
+                .collect(Collectors.toList());
     }
 }
