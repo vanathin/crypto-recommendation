@@ -25,7 +25,7 @@ public class CryptoPriceWriter implements ItemWriter<CryptoPriceDTO> {
     private final CryptoPriceRepository cryptoPriceRepository;
 
     Map<String, Long> cryptoCache = new ConcurrentHashMap<>();
-    private LocalDateTime dateTimeForProcessingMonth = null;
+    private LocalDateTime dateTimeForProcessingMonth = LocalDateTime.now();
 
     @Autowired
     public CryptoPriceWriter(CryptoRepository cryptoRepository, CryptoFileImportRepository cryptoFileImportRepository,
@@ -48,7 +48,6 @@ public class CryptoPriceWriter implements ItemWriter<CryptoPriceDTO> {
             if (priceDate.isBefore(dateTimeForProcessingMonth)) {
                 dateTimeForProcessingMonth = priceDate;
             }
-
             //Save Crypto name
             if (!cryptoCache.containsKey(priceDTO.getSymbol())) {
                 Crypto crypto = cryptoRepository.findBySymbol(priceDTO.getSymbol());
