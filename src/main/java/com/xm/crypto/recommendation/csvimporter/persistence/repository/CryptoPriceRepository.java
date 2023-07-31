@@ -21,5 +21,6 @@ public interface CryptoPriceRepository extends JpaRepository<CryptoPrice, Long> 
     void deleteBySymbol(@Param("symbol") String symbol);
 
 
-    //CryptoStatsProjection getCryptoStats(@Param("symbol") String symbol, @Param("timeFrame") Integer timeFrame);
+
+   // CryptoStatsProjection getCryptoStats(@Param("symbol") String symbol, @Param("timeFrame") Integer timeFrame);
 }

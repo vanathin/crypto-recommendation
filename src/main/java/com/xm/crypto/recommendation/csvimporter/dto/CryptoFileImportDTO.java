@@ -6,5 +6,5 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
 @Builder
-public record CryptoFileImportDto(Long timestamp, String symbol, BigDecimal price, String filename, ZonedDateTime lastModified) {
+public record CryptoFileImportDTO(Long timestamp, String symbol, BigDecimal price, String filename, ZonedDateTime lastModified) {
 }

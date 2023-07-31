@@ -22,6 +22,7 @@ public class Crypto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "symbol", nullable = false, unique = true, length = 255)
@@ -29,4 +30,7 @@ public class Crypto {
 
     @Column(name = "supported", nullable = false, columnDefinition = "boolean default false")
     private boolean supported;
+
+    @Column(name = "time_frame_in_month", nullable = false)
+    private Integer timeFrameInMonth;
 }

@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Id;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 
@@ -23,6 +24,7 @@ public class CryptoPrice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @OneToOne
@@ -31,7 +33,7 @@ public class CryptoPrice {
 
     @Column(name = "price_timestamp", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime priceTimestamp;
+    private LocalDateTime priceTimestamp;
 
     @Column(name = "price", nullable = false, precision = 19, scale = 4)
     private BigDecimal price;

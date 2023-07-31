@@ -1,9 +1,9 @@
 package com.xm.crypto.recommendation.csv.reader;
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDTO;
 import com.xm.crypto.recommendation.csvimporter.batch.reader.CryptoPriceReader;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
+import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,11 +28,14 @@ class CryptoPriceReaderTest {
     private CryptoPriceReader reader;
     private Resource resource;
     @Mock
-    private CryptoPriceRepository cryptoPriceRepository;
+    private CryptoFileImportRepository cryptoFileImportRepository;
+
+    @Mock
+    private CryptoRepository cryptoRepository;
 
     @BeforeEach
     public void setup() throws Exception {
-        reader = new CryptoPriceReader(cryptoPriceRepository);
+        reader = new CryptoPriceReader(cryptoFileImportRepository, cryptoRepository, cryptoStatsReader);
         resource = new ClassPathResource("test.csv");
         reader.setResource(resource);
         reader.afterPropertiesSet(); // You must call this method because it is normally called by Spring to initialize the reader
@@ -41,7 +44,7 @@ class CryptoPriceReaderTest {
 
     @Test
     public void testDoRead() throws Exception {
-        CryptoFileImportDto readItem = reader.read();
+        CryptoFileImportDTO readItem = reader.read();
 
         // Assert the readItem
         assertNotNull(readItem);

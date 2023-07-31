@@ -21,6 +21,9 @@
             <column name="supported" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+            <column name="time_frame_in_month" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -33,9 +36,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="file_name" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="time_frame" type="int">
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_date" type="datetime">
@@ -68,4 +68,32 @@
     </changeSet>
 
 
+    <changeSet id="create_crypto_stats_table" author="Vanathi">
+        <createTable tableName="crypto_stats">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="crypto_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date_of_month" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_price" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="max_price" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oldest_price" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="newest_price" type="DECIMAL(19, 4)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="fk_crypto_stats_crypto_id"
+                                 baseTableName="crypto_stats" baseColumnNames="crypto_id"
+                                 referencedTableName="crypto" referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

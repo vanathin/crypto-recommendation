@@ -30,9 +30,6 @@ public class CryptoFileImport {
     @Column(name = "file_name", nullable = false, length = 255)
     private String fileName;
 
-    @Column(name = "time_frame", nullable = false)
-    private Integer timeFrame;
-
     @Column(name = "last_modified_date", nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime lastModifiedDate;

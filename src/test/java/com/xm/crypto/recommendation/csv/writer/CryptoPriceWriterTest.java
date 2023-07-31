@@ -1,6 +1,7 @@
 package com.xm.crypto.recommendation.csv.writer;
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDTO;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoPriceDTO;
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
 import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImport;
 import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 
@@ -38,19 +40,17 @@ public class CryptoPriceWriterTest {
     @Mock
     private CryptoPriceRepository cryptoPriceRepository;
 
-    private CryptoFileImportDto cryptoFileImportDto;
+    private CryptoPriceDTO priceDTO;
     private Crypto crypto;
     private CryptoFileImport cryptoFileImport;
 
     @BeforeEach
     public void setUp() {
         // Create your test data
-        cryptoFileImportDto = CryptoFileImportDto.builder()
+        priceDTO = CryptoPriceDTO.builder()
                 .symbol("BTC")
                 .price(BigDecimal.valueOf(45000.00))
-                .timestamp(Instant.now().toEpochMilli())
-                .filename("BTC_price.csv")
-                .lastModified(ZonedDateTime.now())
+                .priceTimestamp(ZonedDateTime.ofInstant(Instant.ofEpochMilli(Instant.now().toEpochMilli()), ZoneId.systemDefault()))
                 .build();
 
         crypto = new Crypto();
@@ -68,7 +68,7 @@ public class CryptoPriceWriterTest {
         when(cryptoFileImportRepository.findByCryptoSymbolAndFileNameAndLastModifiedDate(anyString(), anyString(), any(ZonedDateTime.class))).thenReturn(null);
         when(cryptoFileImportRepository.save(any(CryptoFileImport.class))).thenReturn(cryptoFileImport);
 
-        cryptoPriceWriter.write(Collections.singletonList(cryptoFileImportDto));
+        cryptoPriceWriter.write(Collections.singletonList(priceDTO));
 
         verify(cryptoRepository, times(1)).findBySymbol(anyString());
         verify(cryptoRepository, times(1)).save(any(Crypto.class));

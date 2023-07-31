@@ -1,7 +1,7 @@
 package com.xm.crypto.recommendation.csvimporter.batch.reader;
 
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDto;
+import com.xm.crypto.recommendation.csvimporter.dto.CryptoPriceDTO;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,18 +12,13 @@ import javax.annotation.PostConstruct;
 
 @Component
 @StepScope
-public class MultiCryptoPriceReader extends MultiResourceItemReader<CryptoFileImportDto> {
-
-
+public class MultiCryptoPriceReader extends MultiResourceItemReader<CryptoPriceDTO> {
     @Value("file:${crypto.price.files.location}/*.csv")
     private Resource[] resources;
-
     private CryptoPriceReader cryptoPriceReader;
-
     public MultiCryptoPriceReader(CryptoPriceReader cryptoPriceReader) {
         this.cryptoPriceReader = cryptoPriceReader;
     }
-
     @PostConstruct
     private void initialize() {
         setDelegate(cryptoPriceReader);
