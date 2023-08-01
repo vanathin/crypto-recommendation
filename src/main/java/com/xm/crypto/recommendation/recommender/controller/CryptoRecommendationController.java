@@ -4,7 +4,6 @@ import com.xm.crypto.recommendation.common.exception.CryptoNotFoundDomainExcepti
 import com.xm.crypto.recommendation.recommender.dto.CryptoNormalizedRangeDTO;
 import com.xm.crypto.recommendation.recommender.dto.CryptoRecommenderResponseDTO;
 import com.xm.crypto.recommendation.recommender.service.CryptoNormalizedRangeService;
-import com.xm.crypto.recommendation.recommender.service.RecommenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +18,17 @@ import java.util.Optional;
 @RestController
 public class CryptoRecommendationController {
 
-    private final RecommenderService cryptoService;
-
     private final CryptoNormalizedRangeService cryptoNormalizedRangeService;
 
     @Autowired
-    public CryptoRecommendationController(RecommenderService cryptoService, CryptoNormalizedRangeService cryptoNormalizedRangeService) {
-        this.cryptoService = cryptoService;
+    public CryptoRecommendationController(CryptoNormalizedRangeService cryptoNormalizedRangeService) {
         this.cryptoNormalizedRangeService = cryptoNormalizedRangeService;
     }
 
     @GetMapping("/cryptos/highest-normalized-range")
     public ResponseEntity<Optional<CryptoRecommenderResponseDTO>> getCryptoWithHighestNormalizedRange(
-            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-
+            @RequestParam(value = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
         Optional<CryptoRecommenderResponseDTO> result = cryptoNormalizedRangeService.findCryptoWithHighestNormalizedRange(date);
 
         return Optional.ofNullable(result)
@@ -44,7 +40,7 @@ public class CryptoRecommendationController {
     public ResponseEntity<List<CryptoNormalizedRangeDTO>> getCryptoNormalizedRange() {
         return Optional.ofNullable(cryptoNormalizedRangeService.findCryptoWithNormalizedRange())
                 .map(ResponseEntity::ok)
-                .orElseThrow(() -> new CryptoNotFoundDomainException("Crypto details not found" ));
+                .orElseThrow(() -> new CryptoNotFoundDomainException("Crypto details not found"));
     }
 
 }
