@@ -1,5 +1,14 @@
 # Crypto Recommendation Service
 
+### Table of Contents
+- [Introduction](#introduction)
+- [About the Application](#about-the-application)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Database and ER Diagram](#database-and-er-diagram)
+- [Steps to Build and Run the Application](#steps-to-build-and-run-the-application)
+- [Accessing the Swagger UI](#accessing-the-swagger-ui)
+
 ## Introduction
 
 This service is designed to provide valuable statistics and recommendations based on historical cryptocurrency data. It leverages the powerful data processing capabilities of Spring Batch to handle large volumes of cryptocurrency price data, and exposes a set of RESTful APIs for clients to retrieve statistical and recommendation information.
@@ -11,8 +20,6 @@ This application is primarily composed of two components:
 1. The CSV Importer (Spring Batch job) that reads CSV files containing cryptocurrency price data, calculates monthly statistics (oldest, newest, min, max price), and stores these results in the database.
 
 2. The REST API service that exposes endpoints to retrieve the calculated statistical data and provides recommendations based on the normalized range of crypto prices.
-
-## Architecture
 
 ## Tech Stack
 
@@ -27,6 +34,8 @@ This application is primarily composed of two components:
 - Spring Data JPA & MySQL-8: Spring Data JPA is used to simplify the interaction with the MySQL-8 database and handle database operations.
 
 - Spring Batch: Spring Batch is used for efficiently processing large volumes of data, specifically for reading cryptocurrency price data from CSV files and performing calculations.
+
+## Architecture
 
 ### CSV Importer
 
