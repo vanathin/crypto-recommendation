@@ -1,4 +1,4 @@
-package com.xm.crypto.recommendation.common.exception.documentation;
+package com.xm.crypto.recommendation.common.documentation;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

@@ -139,8 +139,30 @@ erDiagram
 
 After you have the application running, you can access the Swagger UI by opening a browser and navigating to [Click here to access swagger ui](http://localhost:8080/swagger-ui/index.html#/).
 
+## Rate Limiting
+
+In order to maintain the quality of service and prevent abuse, we have implemented IP-based rate limiting on all API endpoints using the Bucket4j library. The rate limit is defined in the `application.yml` file and it applies to all the endpoints collectively, not on a per-endpoint basis.
+
+### Implementation Details
+
+- `RateLimitInterceptor`: This is a Spring MVC interceptor that handles rate limiting. It uses the Bucket4j library to create a token bucket for each client IP address and deducts tokens for each API request.
+- `RateLimitConfig`: This is a Spring configuration that registers the `RateLimitInterceptor` to handle requests to the "/api/v1/cryptos/**" path pattern.
+
+### Configuration
+
+In the `application.yml` file, you can adjust the following properties under the `rate-limiter` key:
+
+- `limit`: The maximum number of requests that a client can make in a specified duration.
+- `duration-in-minutes`: The duration in minutes for which the rate limit applies.
+
+### Note
+
+The current rate limiting approach stores the token buckets in memory, which means it only works if the application is running in a single instance. If the application were to scale out to multiple instances, a distributed cache (like Redis) would need to be used to share the rate limit state between instances.
+
 ## Future Improvements
 
 The current version of the application has room for improvements. These improvements have been identified but have not been implemented due to time constraints:
 
 1. **Distributed Locking Mechanism:** Currently, our Spring Batch process that imports files into the database can only run in a single container instance. If multiple instances attempt to execute the batch process, data inconsistencies and conflicts can arise. To resolve this issue, a distributed locking mechanism can be utilized, for instance, using the [ShedLock](https://github.com/lukas-krecan/ShedLock) library.
+
+2. **Distributed Rate Limiting:** In a distributed environment where the application might be scaled out to multiple instances, we would need to use a distributed cache, like Redis, to share the rate limit state between instances.
