@@ -106,7 +106,7 @@ erDiagram
 
 1. **Clone the repository:**:
    ```
-   git clone https://github.com/your-github-username/crypto-recommendation.git
+   git clone https://github.com/vanathin/crypto-recommendation.git
    ```
    
 2. **Navigate to the project directory:**:
@@ -137,4 +137,5 @@ erDiagram
 
 ## Accessing the Swagger UI
 
-After you have the application running, you can access the Swagger UI by opening a browser and navigating to `http://localhost:8080/swagger-ui/index.html#/`.
+After you have the application running, you can access the Swagger UI by opening a browser and navigating to [Click here to access_swagger_ui](`http://localhost:8080/swagger-ui/index.html#/`).
+
