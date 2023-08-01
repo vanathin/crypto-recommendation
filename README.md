@@ -8,6 +8,8 @@
 - [Database and ER Diagram](#database-and-er-diagram)
 - [Steps to Build and Run the Application](#steps-to-build-and-run-the-application)
 - [Accessing the Swagger UI](#accessing-the-swagger-ui)
+- [Rate Limiting](#rate-limiting)
+- [Future Improvements](#future-improvements)
 
 ## Introduction
 
