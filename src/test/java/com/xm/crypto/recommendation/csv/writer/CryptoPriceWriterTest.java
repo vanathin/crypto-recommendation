@@ -1,13 +1,12 @@
 package com.xm.crypto.recommendation.csv.writer;
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDTO;
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoPriceDTO;
-import com.xm.crypto.recommendation.csvimporter.persistence.entity.Crypto;
-import com.xm.crypto.recommendation.csvimporter.persistence.entity.CryptoFileImport;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoPriceRepository;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
-import com.xm.crypto.recommendation.csvimporter.batch.writer.CryptoPriceWriter;
+import com.xm.crypto.recommendation.importer.dto.CryptoPriceDTO;
+import com.xm.crypto.recommendation.importer.persistence.entity.Crypto;
+import com.xm.crypto.recommendation.importer.persistence.entity.CryptoFileImport;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoPriceRepository;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.importer.batch.writer.CryptoPriceWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

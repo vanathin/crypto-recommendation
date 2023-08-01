@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: crypto-recommendation
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/crypto?createDatabaseIfNotExist=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  liquibase:
+      change-log: classpath:db-migration/changelog.xml
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+crypto:
+  price:
+    files:
+      location: ${CRYPTO_PRICE_FILES_LOCATION:~/crypto_csv_files}
+
+# Enable Actuator endpoints
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info, health, health.liveness, health.readiness
+  health:
+    probes:
+      enabled: true
+
+

@@ -1,13 +1,12 @@
 package com.xm.crypto.recommendation.info.service;
 
 import com.xm.crypto.recommendation.common.exception.CryptoNotFoundDomainException;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoRepository;
 import com.xm.crypto.recommendation.info.dto.CryptoStatsDTO;
 import com.xm.crypto.recommendation.info.persistence.repository.CryptoStatsAggregateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public class CryptoStatsAggregateService {
 
     public CryptoStatsDTO getCryptoStatsAggregationForGivenSymbol(String symbol) {
         Optional.ofNullable(cryptoRepository.findBySymbol(symbol))
-                .orElseThrow(() -> new CryptoNotFoundDomainException("Given symbol not found"));
+                .orElseThrow(() -> new CryptoNotFoundDomainException("Given crypto symbol is not supported."));
 
         List<Object[]> results = cryptoStatsRepository.findAggregatedCryptoStats(symbol);
         if(results != null) {

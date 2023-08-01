@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: 'crypto'
+      MYSQL_USER: 'crypto_recommendation'
+      MYSQL_PASSWORD: 'crypto2023'
+      MYSQL_ROOT_PASSWORD: 'crypto2023'
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+  crypto-recommendation:
+    depends_on:
+      - db
+    image: crypto-recommendation
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/crypto?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: crypto_recommendation
+      SPRING_DATASOURCE_PASSWORD: crypto2023
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      CRYPTO_PRICE_FILES_LOCATION: ~/crypto_csv_files
+volumes:
+  db_data: {}

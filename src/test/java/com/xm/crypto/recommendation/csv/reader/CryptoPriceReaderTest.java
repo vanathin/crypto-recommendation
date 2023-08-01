@@ -1,9 +1,8 @@
 package com.xm.crypto.recommendation.csv.reader;
 
-import com.xm.crypto.recommendation.csvimporter.dto.CryptoFileImportDTO;
-import com.xm.crypto.recommendation.csvimporter.batch.reader.CryptoPriceReader;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoFileImportRepository;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.importer.batch.reader.CryptoPriceReader;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoFileImportRepository;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +12,6 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,8 +36,9 @@ public class CryptoNormalizedRangeService {
                             (BigDecimal) result[1]))
                     .collect(Collectors.toList());
         }
-        return null;
+        return List.of();
     }
+
     public Optional<CryptoRecommenderResponseDTO> findCryptoWithHighestNormalizedRange(LocalDate date) {
         LocalDateTime startDateTime = date.atStartOfDay();
         LocalDateTime endDateTime = date.plusDays(1).atStartOfDay();

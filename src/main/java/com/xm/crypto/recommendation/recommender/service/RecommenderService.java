@@ -1,7 +1,7 @@
 package com.xm.crypto.recommendation.recommender.service;
 
 import com.xm.crypto.recommendation.recommender.dto.CryptoRecommenderResponseDTO;
-import com.xm.crypto.recommendation.csvimporter.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.importer.persistence.repository.CryptoRepository;
 import com.xm.crypto.recommendation.recommender.dto.projection.CryptoNormalizedRangeProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
