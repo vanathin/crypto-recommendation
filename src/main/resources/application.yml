@@ -5,8 +5,8 @@ spring:
     name: crypto-recommendation
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/crypto?createDatabaseIfNotExist=true}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    username: ${SPRING_DATASOURCE_USERNAME:crypto_recommendation}
+    password: ${SPRING_DATASOURCE_PASSWORD:crypto2023}
     driver-class-name: com.mysql.cj.jdbc.Driver
   liquibase:
       change-log: classpath:db-migration/changelog.xml
