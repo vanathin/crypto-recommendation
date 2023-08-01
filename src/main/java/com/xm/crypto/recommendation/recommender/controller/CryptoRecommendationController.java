@@ -1,6 +1,5 @@
 package com.xm.crypto.recommendation.recommender.controller;
 
-import com.xm.crypto.recommendation.common.exception.CryptoNotFoundDomainException;
 import com.xm.crypto.recommendation.common.exception.dto.ErrorDTO;
 import com.xm.crypto.recommendation.recommender.dto.CryptoNormalizedRangeDTO;
 import com.xm.crypto.recommendation.recommender.dto.CryptoRecommenderResponseDTO;
@@ -27,6 +26,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/cryptos/recommendations/")
+@Tag(name = "Crypto Recommendations", description = "Endpoints related to crypto recommendations")
 public class CryptoRecommendationController {
 
     private final CryptoNormalizedRangeService cryptoNormalizedRangeService;
