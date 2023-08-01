@@ -137,5 +137,5 @@ erDiagram
 
 ## Accessing the Swagger UI
 
-After you have the application running, you can access the Swagger UI by opening a browser and navigating to [Click here to access_swagger_ui](http://localhost:8080/swagger-ui/index.html#/).
+After you have the application running, you can access the Swagger UI by opening a browser and navigating to [Click here to access swagger ui](http://localhost:8080/swagger-ui/index.html#/).
 
