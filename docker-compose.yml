@@ -21,6 +21,8 @@ services:
       SPRING_DATASOURCE_USERNAME: crypto_recommendation
       SPRING_DATASOURCE_PASSWORD: crypto2023
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
-      CRYPTO_PRICE_FILES_LOCATION: ~/crypto_csv_files
+      CRYPTO_PRICE_FILES_LOCATION: /crypto_csv_files
+    volumes:
+      - ~/crypto_csv_files:/crypto_csv_files
 volumes:
   db_data: {}

@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime
-eclipse-temurin:17-jdk
+FROM arm64v8/eclipse-temurin:17
 
 # Add Maintainer Info
 LABEL maintainer="vanathi.nallasivam@gmail.com"
@@ -11,7 +11,7 @@ VOLUME /tmp
 EXPOSE 8080
 
 # The application's jar file
-ARG JAR_FILE=target/crypto-recommendation.jar
+ARG JAR_FILE=target/*.jar
 
 # Add the application's jar to the container
 ADD ${JAR_FILE} app.jar
