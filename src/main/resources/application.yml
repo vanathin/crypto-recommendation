@@ -42,3 +42,7 @@ management:
 springdoc:
   show-actuator: true
   default-produces-media-type: application/json
+
+rate-limiter:
+  limit: 10
+  duration-in-minutes: 1
