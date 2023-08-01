@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "510d191a-b52c-44a3-8802-6af475c32fcc",
+		"name": "Crypto-recommendation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Aggregated Crypto Stats for given crypto",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "date",
+						"value": "\"2022-01-02\"",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"vanathi\",\n    \"age\": 25\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cryptos/BTC1/stats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cryptos",
+						"BTC1",
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "highest-normalized-range",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cryptos/recommendations/highest-normalized-range?date=2022-01-01",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cryptos",
+						"recommendations",
+						"highest-normalized-range"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2022-01-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sorted-by-normalized-range",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/cryptos/recommendations/sorted-by-normalized-range",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"cryptos",
+						"recommendations",
+						"sorted-by-normalized-range"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "actuator",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/actuator/health/readiness",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator",
+						"health",
+						"readiness"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

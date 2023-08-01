@@ -41,7 +41,7 @@ class CryptoPriceWriterTest {
 
     @Test
     void write() throws Exception {
-        // Arrange
+        // Given
         LocalDateTime testDateTime = LocalDateTime.of(2023, 8, 1, 12, 0);
         CryptoPriceDTO cryptoPriceDTO = new CryptoPriceDTO("BTC", testDateTime, BigDecimal.valueOf(40000.0));
         Crypto testCrypto = Crypto.builder()
@@ -53,10 +53,10 @@ class CryptoPriceWriterTest {
         when(cryptoRepository.findBySymbol("BTC")).thenReturn(null);
         when(cryptoRepository.save(any())).thenReturn(testCrypto);
 
-        // Act
+        // When
         cryptoPriceWriter.write(Collections.singletonList(cryptoPriceDTO));
 
-        // Assert
+        // Then
         verify(cryptoRepository, times(1)).findBySymbol("BTC");
         verify(cryptoRepository, times(1)).save(any());
         verify(cryptoPriceRepository, times(1)).saveAll(any());
@@ -64,16 +64,16 @@ class CryptoPriceWriterTest {
 
     @Test
     void write_withExistingCrypto_doesNotCreateNewCrypto() throws Exception {
-        // Arrange
+        // Given
         LocalDateTime testDateTime = LocalDateTime.of(2023, 8, 1, 12, 0);
         CryptoPriceDTO cryptoPriceDTO = new CryptoPriceDTO("BTC", testDateTime, BigDecimal.valueOf(40000.0));
         Crypto existingCrypto = Crypto.builder().id(1L).symbol("BTC").supported(true).timeFrameInMonth(1).build();
         when(cryptoRepository.findBySymbol("BTC")).thenReturn(existingCrypto);
 
-        // Act
+        // When
         cryptoPriceWriter.write(Collections.singletonList(cryptoPriceDTO));
 
-        // Assert
+        // Then
         verify(cryptoRepository, times(1)).findBySymbol("BTC");
         verify(cryptoRepository, times(0)).save(any()); // assert that new Crypto is not saved
         verify(cryptoPriceRepository, times(1)).saveAll(any());
@@ -82,17 +82,17 @@ class CryptoPriceWriterTest {
 
     @Test
     void write_withMultipleCryptos_updatesDateTimeForProcessingMonthCorrectly() throws Exception {
-        // Arrange
+        // Given
         LocalDateTime earlierDateTime = LocalDateTime.of(2023, 1, 1, 12, 0);
         CryptoPriceDTO earlierCryptoPriceDTO = new CryptoPriceDTO("BTC", earlierDateTime, BigDecimal.valueOf(40000.0));
         LocalDateTime laterDateTime = LocalDateTime.of(2023, 12, 31, 12, 0);
         CryptoPriceDTO laterCryptoPriceDTO = new CryptoPriceDTO("BTC", laterDateTime, BigDecimal.valueOf(45000.0));
         Crypto existingCrypto = Crypto.builder().id(1L).symbol("BTC").supported(true).timeFrameInMonth(1).build();
         when(cryptoRepository.findBySymbol("BTC")).thenReturn(existingCrypto);
-        // Act
+        // When
         cryptoPriceWriter.write(Arrays.asList(earlierCryptoPriceDTO, laterCryptoPriceDTO));
 
-        // Assert
+        // Then
         assertEquals(earlierDateTime, cryptoPriceWriter.getDateTimeForProcessingMonth());
     }
 

@@ -1,10 +1,10 @@
 package com.xm.crypto.recommendation.info.service;
 
 import com.xm.crypto.recommendation.common.exception.CryptoNotFoundDomainException;
-import com.xm.crypto.recommendation.info.dto.CryptoStatsDTO;
-import com.xm.crypto.recommendation.info.persistence.repository.CryptoStatsAggregateRepository;
 import com.xm.crypto.recommendation.importer.persistence.entity.Crypto;
 import com.xm.crypto.recommendation.importer.persistence.repository.CryptoRepository;
+import com.xm.crypto.recommendation.info.dto.CryptoStatsDTO;
+import com.xm.crypto.recommendation.info.persistence.repository.CryptoStatsAggregateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
