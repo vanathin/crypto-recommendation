@@ -139,3 +139,8 @@ erDiagram
 
 After you have the application running, you can access the Swagger UI by opening a browser and navigating to [Click here to access swagger ui](http://localhost:8080/swagger-ui/index.html#/).
 
+## Future Improvements
+
+The current version of the application has room for improvements. These improvements have been identified but have not been implemented due to time constraints:
+
+1. **Distributed Locking Mechanism:** Currently, our Spring Batch process that imports files into the database can only run in a single container instance. If multiple instances attempt to execute the batch process, data inconsistencies and conflicts can arise. To resolve this issue, a distributed locking mechanism can be utilized, for instance, using the [ShedLock](https://github.com/lukas-krecan/ShedLock) library.
