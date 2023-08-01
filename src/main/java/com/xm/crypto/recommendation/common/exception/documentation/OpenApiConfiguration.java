@@ -1,5 +1,4 @@
-package com.xm.crypto.recommendation.info.documentation;
-
+package com.xm.crypto.recommendation.common.exception.documentation;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -8,9 +7,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Crypto Info API - OpenAPI 3.0 documentation",
+                title = "Crypto Recommendations API",
                 description = """
-                        API for managing crypto information.
+                        API for crypto recommendations.
                         """,
                 license = @License(
                         name = "MIT Licence",

@@ -24,6 +24,8 @@ crypto:
 
 # Enable Actuator endpoints
 management:
+  server:
+    port: 8080 # Same port as application port just to avoid CORS issue from swagger
   endpoint:
     health:
       show-details: always
@@ -37,4 +39,6 @@ management:
     probes:
       enabled: true
 
-
+springdoc:
+  show-actuator: true
+  default-produces-media-type: application/json
